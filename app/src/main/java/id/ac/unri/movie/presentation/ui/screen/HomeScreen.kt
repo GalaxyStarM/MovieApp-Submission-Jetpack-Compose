@@ -63,7 +63,7 @@ fun HomeContent(
             contentPadding = PaddingValues(8.dp),
             modifier = modifier
         ) {
-            items(movies, key = { it.id!! }) { movie ->
+            items(movies) { movie ->
                 MovieItem(
                     title = movie.title,
                     genre = movie.genre,

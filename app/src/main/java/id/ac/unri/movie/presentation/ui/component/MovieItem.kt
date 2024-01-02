@@ -44,7 +44,7 @@ fun MovieItem(
         shadowElevation = 10.dp
     ){
         Card(
-            modifier = Modifier
+            modifier = modifier
                 .size(width = 160.dp, height = 310.dp)
                 .clip(RoundedCornerShape(16.dp))
         ) {

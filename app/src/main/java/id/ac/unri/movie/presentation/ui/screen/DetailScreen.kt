@@ -1,8 +1,10 @@
 package id.ac.unri.movie.presentation.ui.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Divider
@@ -89,35 +92,56 @@ fun MovieDetailContent(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Column(modifier = Modifier.padding(start = 16.dp, end = 16.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Surface(
-                        shape = RoundedCornerShape(24.dp),
-                        modifier = Modifier.wrapContentSize(),
-                        color = Color(0xFFFCC71F)
-                    ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(
+                            shape = RoundedCornerShape(24.dp),
+                            modifier = Modifier.wrapContentSize(),
+                            color = Color(0xFFFCC71F)
+                        ) {
+                            Text(
+                                text = "IMDB 7.0",
+                                style = MaterialTheme.typography.labelMedium,
+                                modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                            )
+                        }
+
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_star),
+                            contentDescription = "favorite",
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                        )
+
                         Text(
-                            text = "IMDB 7.0",
+                            text = rating,
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.padding(vertical = 4.dp)
+                        )
+
+                        Text(
+                            text = "$duration min",
                             style = MaterialTheme.typography.labelMedium,
                             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
                         )
                     }
 
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_star),
-                        contentDescription = "favorite",
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
-                    )
-
-                    Text(
-                        text = rating,
-                        style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-
-                    Text(
-                        text = "$duration min",
-                        style = MaterialTheme.typography.labelMedium,
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp)
+                        painter = if (isFavorite) painterResource(id = R.drawable.ic_favorite)
+                            else painterResource(id = R.drawable.ic_favorite_border),
+                        contentDescription = null,
+                        tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                onAddToFavoriteClicked(id ?: 0, !isFavorite)
+                            }
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -163,7 +187,10 @@ fun MovieDetailContent(
             modifier = Modifier
                 .padding(start = 8.dp, top = 8.dp)
                 .align(Alignment.TopStart)
+                .clip(CircleShape)
+                .size(40.dp)
                 .testTag("back_button")
+                .background(MaterialTheme.colorScheme.background.copy(alpha = 0.7f))
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_back),
@@ -172,21 +199,6 @@ fun MovieDetailContent(
                     .size(32.dp)
             )
         }
-
-        Icon(
-            painter = if (isFavorite) painterResource(id = R.drawable.ic_favorite)
-            else painterResource(id = R.drawable.ic_favorite_border),
-            contentDescription = null,
-            tint = if (isFavorite) Color.Red else MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .size(32.dp)
-                .clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) {
-                    onAddToFavoriteClicked(id ?: 0, !isFavorite)
-                }
-        )
     }
 }
 
